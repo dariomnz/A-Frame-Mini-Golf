@@ -30,3 +30,25 @@ body {
 .a-dom-overlay:xr-overlay #controls {
   display: block;
 }
+
+#win_popup {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  visibility: hidden;
+}
+
+#win_popup > h1 {
+  font-size: 5rem;
+}
+#win_popup > button {
+  font-size: 2rem;
+}
+#win_popup > #confeti {
+  position: absolute;
+  pointer-events: none;
+}

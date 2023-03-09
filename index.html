@@ -11,7 +11,7 @@
 
   <body>
     <a-scene
-      webxr="requiredFeatures: local-floor"
+      webxr="requiredFeatures: local-floor, dom-overlay;overlayElement:#overlay;"
       physics="driver: ammo; debug: true; debugDrawMode: 1;"
       golf-game
     >
@@ -37,14 +37,25 @@
         gltf-model="#level1_model"
         position="0 -2 0"
         autofit-gltf-ammo
-      ></a-entity>
+      >
+        <a-box
+          position="-9.2 -3.05 -6.3"
+          id="hole_hitbox"
+          material="color:red"
+          ammo-body="type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
+          ammo-shape="type:box;fit:manual;halfExtents:0.3 0.3 0.3;offset:0 0 0;"
+          visible="false"
+          hole-collision
+        >
+        </a-box>
+      </a-entity>
 
       <a-sphere
         id="ball"
         material="color:white;src:#balltexture"
-        position="0.1 2.5 -1.8"
+        position="-9.2 -1 -6.3"
         scale="1 1 1"
-        ammo-body="type: dynamic;linearDamping: 0.5"
+        ammo-body="type: dynamic;linearDamping: 0.1"
         ammo-shape="type: sphere"
         radius="0.2"
         ammo-restitution="1.5"
@@ -60,7 +71,7 @@
         ></a-sphere
       ></a-sphere>
 
-      <a-entity id="camera" position="0 2 0">
+      <a-entity id="camera" position="-9.15 0 -6.3">
         <a-camera position="0 0 0" fov="100">
           <a-entity id="wedge" scale="0.02 0.02 0.02" gltf-model="#golf_wedge">
             <a-box
@@ -91,5 +102,13 @@
       >
       </a-entity>
     </a-scene>
+    <div id="overlay">
+      <div id="win_popup">
+        <h1>Ganaste!</h1>
+        <button onclick="console.log('click')">Reiniciar</button>
+        <img id="confeti" src="images/confeti.gif" alt="" />
+      </div>
+      <button onclick="console.log('click')">Reiniciar</button>
+    </div>
   </body>
 </html>

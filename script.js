@@ -54,12 +54,33 @@ function positionAmmoBody(body, p) {
   Ammo.destroy(positionVec);
 }
 
+AFRAME.registerComponent("hole-collision", {
+  schema: {
+    win_popup: {
+      default: "#win_popup",
+      type: "selector",
+    },
+  },
+  init: function () {
+    var audio = new Audio("sounds/winner.mp3");
+    this.el.addEventListener("collidestart", (e) => {
+      id = e.detail?.targetEl?.id;
+      console.log(this.data.win_popup);
+      if (id == "ball_hitbox") {
+        this.data.win_popup.style.visibility = "visible";
+        audio.play();
+        // TODO: evento de click en restart para reiniciar el nivel
+      }
+    });
+  },
+});
+
 AFRAME.registerComponent("ball-collision", {
   init: function () {
     this.el.addEventListener("collidestart", (e) => {
       id = e.detail?.targetEl?.id;
       if (id == "wedge_head" || id == "wedge_rod")
-        console.log(window.navigator.vibrate(200));
+        window.navigator.vibrate(200);
     });
   },
 });
