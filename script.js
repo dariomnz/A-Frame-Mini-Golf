@@ -1,5 +1,4 @@
 /* global AFRAME, THREE, Ammo */
-// TODO: hacer vibracion cuando das a la pelota y posible sonido
 
 const tempVector = new THREE.Vector3();
 
@@ -55,6 +54,16 @@ function positionAmmoBody(body, p) {
   Ammo.destroy(positionVec);
 }
 
+AFRAME.registerComponent("ball-collision", {
+  init: function () {
+    this.el.addEventListener("collidestart", (e) => {
+      id = e.detail?.targetEl?.id;
+      if (id == "wedge_head" || id == "wedge_rod")
+        console.log(window.navigator.vibrate(200));
+    });
+  },
+});
+
 AFRAME.registerComponent("golf-game", {
   schema: {
     wedge: {
@@ -76,9 +85,6 @@ AFRAME.registerComponent("golf-game", {
     level: {
       default: "#level",
       type: "selector",
-    },
-    launchVelocity: {
-      default: 5,
     },
   },
 
@@ -186,8 +192,5 @@ AFRAME.registerComponent("golf-game", {
       rotation.y = (rotation.y - 100 * timeDelta * 0.001) % 360;
       this.data.camera.setAttribute("rotation", rotation);
     }
-
-    console.log("izquierda", this.rotate_left);
-    console.log("derecha", this.rotate_right);
   },
 });
