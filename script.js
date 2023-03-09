@@ -167,18 +167,5 @@ AFRAME.registerComponent("golf-game", {
       rotation.y = (rotation.y + 10) % 360;
       this.data.camera_preview.setAttribute("rotation", rotation);
     }
-    // Mueves el palo de golf con la camara
-    const camera_pos = this.data.camera.getAttribute("position");
-    const camera_local_pos =
-      this.data.camera.children[0].getAttribute("position");
-
-    const position = new THREE.Vector3();
-    const camera_rot = this.data.camera.children[0].getAttribute("rotation");
-    position.x = camera_pos.x + camera_local_pos.x;
-    position.y = camera_pos.y + camera_local_pos.y;
-    position.z = camera_pos.z + camera_local_pos.z;
-
-    this.data.wedge.setAttribute("position", position);
-    this.data.wedge.setAttribute("rotation", camera_rot);
   },
 });
