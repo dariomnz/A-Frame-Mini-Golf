@@ -1,8 +1,6 @@
 /* global AFRAME, THREE, Ammo */
 // TODO: hacer vibracion cuando das a la pelota y posible sonido
 
-
-
 const tempVector = new THREE.Vector3();
 
 AFRAME.registerComponent("ammo-restitution", {
@@ -93,6 +91,9 @@ AFRAME.registerComponent("golf-game", {
 
     this.el.addEventListener("enter-vr", this.onEnterXR);
     this.el.addEventListener("exit-vr", this.onExitXR);
+
+    this.rotate_left = false;
+    this.rotate_right = false;
   },
 
   onEnterXR: function () {
@@ -107,42 +108,49 @@ AFRAME.registerComponent("golf-game", {
   onExitXR: function () {},
 
   onSelectEnd: function (e) {
-    console.log("released");
     // Cuando sueltas click se mueve a la posicion y se hace invisible el puntero
     this.inputSource = null;
     if (this.camera_point) {
       this.data.camera.setAttribute("position", this.camera_point);
       this.data.camera_preview.setAttribute("visible", false);
     }
+
+    this.rotate_left = false;
+    this.rotate_right = false;
   },
 
   onSelectStart: function (e) {
-    console.log("pressed");
-    // cuando haces click se pone visible el puntero donde te moveras
-    this.inputSource = e.inputSource;
     const position = new THREE.Vector2();
-    const raycaster = new THREE.Raycaster();
     const [x, y] = e.inputSource.gamepad.axes;
     position.x = x;
     position.y = -y;
 
-    raycaster.setFromCamera(position, this.el.sceneEl.camera);
+    // si la posicion es en los bordes gira la camara
+    if (x < -0.7) {
+      this.rotate_left = true;
+    } else if (x > 0.7) {
+      this.rotate_right = true;
+    } else {
+      // sino cuando haces click se pone visible el puntero donde te moveras
+      this.inputSource = e.inputSource;
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(position, this.el.sceneEl.camera);
 
-    const intersects = raycaster.intersectObject(
-      this.data.level.object3D,
-      true
-    );
+      const intersects = raycaster.intersectObject(
+        this.data.level.object3D,
+        true
+      );
 
-    if (intersects.length === 0) return;
-    // console.log(intersects);
-    this.data.camera_preview.setAttribute("position", intersects[0].point);
-    this.data.camera_preview.setAttribute("visible", true);
-    this.camera_point = intersects[0].point;
+      if (intersects.length === 0) return;
+      this.data.camera_preview.setAttribute("position", intersects[0].point);
+      this.data.camera_preview.setAttribute("visible", true);
+      this.camera_point = intersects[0].point;
+    }
   },
 
   onSelect: function (e) {},
 
-  tick: function () {
+  tick: function (time, timeDelta) {
     // Para cuando haces click cambiar de posicion
     if (this.inputSource) {
       const position = new THREE.Vector2();
@@ -164,8 +172,22 @@ AFRAME.registerComponent("golf-game", {
       this.camera_point = intersects[0].point;
 
       const rotation = this.data.camera_preview.getAttribute("rotation");
-      rotation.y = (rotation.y + 10) % 360;
+      rotation.y = (rotation.y + 100 * timeDelta * 0.001) % 360;
       this.data.camera_preview.setAttribute("rotation", rotation);
     }
+    // cuando haces clicks para girar la camara
+    if (this.rotate_left) {
+      const rotation = this.data.camera.getAttribute("rotation");
+      rotation.y = (rotation.y + 100 * timeDelta * 0.001) % 360;
+      this.data.camera.setAttribute("rotation", rotation);
+    }
+    if (this.rotate_right) {
+      const rotation = this.data.camera.getAttribute("rotation");
+      rotation.y = (rotation.y - 100 * timeDelta * 0.001) % 360;
+      this.data.camera.setAttribute("rotation", rotation);
+    }
+
+    console.log("izquierda", this.rotate_left);
+    console.log("derecha", this.rotate_right);
   },
 });
