@@ -1,0 +1,82 @@
+<html>
+  <!DOCTYPE html>
+
+  <head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+
+  <body>
+    <a-scene
+      webxr="requiredFeatures: local-floor"
+      physics="driver: ammo; debug: true; debugDrawMode: 1;"
+      golf-game
+    >
+      <a-assets>
+        <img id="balltexture" src="golf_ball/golf_ball_texture.png" />
+        <a-asset-item
+          id="level1_model"
+          src="mini_golf_course/scene_low.gltf"
+        ></a-asset-item>
+        <a-asset-item
+          id="map_point"
+          src="map_point/map_point.gltf"
+        ></a-asset-item>
+        <a-asset-item
+          id="golf_wedge"
+          src="golf_wedge_iron/golf_wedge_iron.gltf"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-entity
+        id="level"
+        delay-scale="0.5 0.5 0.5"
+        gltf-model="#level1_model"
+        position="0 -2 0"
+        autofit-gltf-ammo
+      ></a-entity>
+      <a-entity id="wedge" scale="0.02 0.02 0.02" gltf-model="#golf_wedge">
+        <a-box
+          material="color:red"
+          ammo-body="type:kinematic"
+          ammo-shape="type:cylinder;fit:manual;halfExtents:0.01 0.01 0.9;cylinderAxis:z;offset:0.08 -0.08 -0.65"
+          visible="false"
+        >
+        </a-box>
+        <a-box
+          material="color:red"
+          ammo-body="type:kinematic"
+          ammo-shape="type:box;fit:manual;halfExtents:0.05 0.05 0.05;offset:0.1 0 -1.57"
+          visible="false"
+        >
+        </a-box>
+      </a-entity>
+
+      <a-sphere
+        id="ball"
+        material="color:white;src:#balltexture"
+        position="0.1 2.5 -1.8"
+        scale="1 1 1"
+        ammo-body="type: dynamic;"
+        ammo-shape="type: sphere"
+        radius="0.2"
+        ammo-restitution="1.5"
+      ></a-sphere>
+
+      <a-entity id="camera" position="0 2 0">
+        <a-camera position="0 0 0"></a-camera>
+      </a-entity>
+
+      <a-entity
+        id="camera_preview"
+        visible="false"
+        gltf-model="#map_point"
+        scale="0.2 0.2 0.2"
+      >
+      </a-entity>
+    </a-scene>
+  </body>
+</html>

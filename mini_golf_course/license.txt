@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mini Golf Course
+* source:	https://sketchfab.com/3d-models/mini-golf-course-ba3d630c1b1946efaaed4a6b2ff6d5d7
+* author:	amftwg (https://sketchfab.com/amftwg)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mini Golf Course" (https://sketchfab.com/3d-models/mini-golf-course-ba3d630c1b1946efaaed4a6b2ff6d5d7) by amftwg (https://sketchfab.com/amftwg) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
