@@ -53,17 +53,16 @@
         autofit-gltf-ammo
       >
         <a-box
-        position="0 -4.7 -12.2"
-        id="hole_hitbox"
-        material="color:red"
-        ammo-body="type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
-        ammo-shape="type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;"
-        visible="false"
-        hole-collision
-      >
-      </a-box>
+          position="0 -4.7 -12.2"
+          id="hole_hitbox"
+          material="color:red"
+          ammo-body="type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
+          ammo-shape="type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;"
+          visible="false"
+          hole-collision
+        >
+        </a-box>
       </a-entity>
-
       <a-sphere
         id="ball"
         material="color:white;src:#balltexture"
@@ -128,6 +127,7 @@
     <div id="overlay">
       <div id="win_popup">
         <h1>Ganaste!</h1>
+        <button class="btn-reset" onclick="nextLevel()">Siguiente nivel</button>
         <button class="btn-reset" onclick="onResetScene()">Reiniciar</button>
         <img id="confeti" src="images/confeti.gif" alt="" />
       </div>

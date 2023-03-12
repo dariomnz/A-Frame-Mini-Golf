@@ -18,8 +18,29 @@ function getToques() {
   return parseInt(document.getElementById("num_toques").innerHTML);
 }
 
+actual_level = "#level1_model";
+function nextLevel() {
+  var next_level = "";
+  switch (actual_level) {
+    case "#level1_model":
+      next_level = "#level2_model";
+      break;
+    case "#level2_model":
+      next_level = "#level3_model";
+      break;
+    case "#level3_model":
+      next_level = "#level1_model";
+      break;
+    default:
+      break;
+  }
+
+  changeLevel(next_level);
+}
+
 function changeLevel(levelname) {
   console.log("Changing level to: ", levelname);
+  actual_level = levelname;
 
   level = document.getElementById("level");
   level.removeAttribute("ammo-shape");
@@ -33,7 +54,7 @@ function changeLevel(levelname) {
       position = "0 -2.7 -12.2";
       break;
     case "#level2_model":
-      position = "-9.15 -1.25 -5.8";
+      position = "-9. -1.22 -5.8";
       break;
     case "#level3_model":
       position = "-6.6 -0.6 -32.5";
@@ -43,8 +64,13 @@ function changeLevel(levelname) {
   }
 
   hole_hitbox = document.getElementById("hole_hitbox");
+  hole_hitbox.removeAttribute("ammo-shape");
+  hole_hitbox.removeAttribute("ammo-body");
   hole_hitbox.setAttribute("position", position);
-  hole_hitbox.components["ammo-body"].syncToPhysics()
+  hole_hitbox.setAttribute("ammo-body", "type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;");
+  hole_hitbox.setAttribute("ammo-shape", "type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;");
+
+  // hole_hitbox.components["ammo-body"].syncToPhysics();
   onResetScene();
 }
 
@@ -180,7 +206,7 @@ AFRAME.registerComponent("golf-game", {
     this.rotate_left = false;
     this.rotate_right = false;
 
-    reset_plane.addEventListener("collidestart", this.onResetScene);
+    reset_plane.addEventListener("collidestart", onResetScene);
   },
 
   onEnterXR: function () {
