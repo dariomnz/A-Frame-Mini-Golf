@@ -104,6 +104,10 @@ AFRAME.registerComponent("golf-game", {
       default: "#win_popup",
       type: "selector",
     },
+    reset_plane: {
+      default: "#reset_plane",
+      type: "selector",
+    },
   },
 
   init: function () {
@@ -123,6 +127,9 @@ AFRAME.registerComponent("golf-game", {
     for (var i = 0; i < botones.length; i++) {
       botones[i].addEventListener("click", this.onResetScene);
     }
+
+    
+    reset_plane.addEventListener("collidestart", this.onResetScene);
   },
 
   onEnterXR: function () {
