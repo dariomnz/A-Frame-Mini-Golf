@@ -1,5 +1,15 @@
 /* global AFRAME, THREE, Ammo */
 
+// para saber los metodos
+function getMethods(obj) {
+  var res = [];
+  for (var m in obj) {
+    if (typeof obj[m] == "function") {
+      res.push(m);
+    }
+  }
+  return res;
+}
 const tempVector = new THREE.Vector3();
 
 AFRAME.registerComponent("ammo-restitution", {
@@ -38,22 +48,6 @@ AFRAME.registerComponent("delay-scale", {
   },
 });
 
-function positionAmmoBody(body, p) {
-  const transform = new Ammo.btTransform();
-  body.getMotionState().getWorldTransform(transform);
-
-  const positionVec = new Ammo.btVector3(p.x, p.y, p.z);
-
-  transform.setOrigin(positionVec);
-  body.getMotionState().setWorldTransform(transform);
-  body.setCenterOfMassTransform(transform);
-  body.activate();
-
-  // Clean up
-  Ammo.destroy(transform);
-  Ammo.destroy(positionVec);
-}
-
 AFRAME.registerComponent("hole-collision", {
   schema: {
     win_popup: {
@@ -69,7 +63,6 @@ AFRAME.registerComponent("hole-collision", {
       if (id == "ball_hitbox") {
         this.data.win_popup.style.visibility = "visible";
         audio.play();
-        // TODO: evento de click en restart para reiniciar el nivel
       }
     });
   },
@@ -79,6 +72,7 @@ AFRAME.registerComponent("ball-collision", {
   init: function () {
     this.el.addEventListener("collidestart", (e) => {
       id = e.detail?.targetEl?.id;
+      console.log("Colision ", id);
       if (id == "wedge_head" || id == "wedge_rod")
         window.navigator.vibrate(200);
     });
@@ -87,14 +81,6 @@ AFRAME.registerComponent("ball-collision", {
 
 AFRAME.registerComponent("golf-game", {
   schema: {
-    wedge: {
-      default: "#wedge",
-      type: "selector",
-    },
-    ball: {
-      default: "#ball",
-      type: "selector",
-    },
     camera: {
       default: "#camera",
       type: "selector",
@@ -107,6 +93,10 @@ AFRAME.registerComponent("golf-game", {
       default: "#level",
       type: "selector",
     },
+    win_popup: {
+      default: "#win_popup",
+      type: "selector",
+    },
   },
 
   init: function () {
@@ -114,13 +104,18 @@ AFRAME.registerComponent("golf-game", {
     this.onExitXR = this.onExitXR.bind(this);
     this.onSelectEnd = this.onSelectEnd.bind(this);
     this.onSelectStart = this.onSelectStart.bind(this);
-    this.onSelect = this.onSelect.bind(this);
+    this.onResetScene = this.onResetScene.bind(this);
 
     this.el.addEventListener("enter-vr", this.onEnterXR);
     this.el.addEventListener("exit-vr", this.onExitXR);
 
     this.rotate_left = false;
     this.rotate_right = false;
+
+    var botones = document.getElementsByClassName("btn-reset");
+    for (var i = 0; i < botones.length; i++) {
+      botones[i].addEventListener("click", this.onResetScene);
+    }
   },
 
   onEnterXR: function () {
@@ -129,7 +124,6 @@ AFRAME.registerComponent("golf-game", {
     this.session = this.el.sceneEl.renderer.xr.getSession();
     this.session.addEventListener("selectend", this.onSelectEnd);
     this.session.addEventListener("selectstart", this.onSelectStart);
-    this.session.addEventListener("select", this.onSelect);
   },
 
   onExitXR: function () {},
@@ -175,7 +169,29 @@ AFRAME.registerComponent("golf-game", {
     }
   },
 
-  onSelect: function (e) {},
+  onResetScene: function () {
+    this.data.win_popup.style.visibility = "hidden";
+    this.data.camera.setAttribute("position", "0 0 0");
+    this.data.camera.setAttribute("rotation", "0 0 0");
+
+    ball = document.getElementById("ball");
+    const transform = new Ammo.btTransform();
+    ball.body.getMotionState().getWorldTransform(transform);
+    const positionVec = new Ammo.btVector3(0, 0, -1);
+    transform.setOrigin(positionVec);
+    ball.body.getMotionState().setWorldTransform(transform);
+    ball.body.setCenterOfMassTransform(transform);
+    ball.body.activate();
+    Ammo.destroy(transform);
+    Ammo.destroy(positionVec);
+
+    const velocity = new Ammo.btVector3(0, 0, 0);
+    const angularVelocity = new Ammo.btVector3(0, 0, 0);
+    ball.body.setLinearVelocity(velocity);
+    ball.body.setAngularVelocity(angularVelocity);
+    Ammo.destroy(velocity);
+    Ammo.destroy(angularVelocity);
+  },
 
   tick: function (time, timeDelta) {
     // Para cuando haces click cambiar de posicion

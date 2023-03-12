@@ -11,10 +11,17 @@
 
   <body>
     <a-scene
+      id="scene"
       webxr="requiredFeatures: local-floor, dom-overlay;overlayElement:#overlay;"
       physics="driver: ammo; debug: true; debugDrawMode: 1;"
+      light="defaultLightsEnabled: false"
       golf-game
     >
+      <a-entity light="type: ambient; color: #FFF; intensity: 0.5"></a-entity>
+      <a-entity
+        light="type: directional; color: #FFF; intensity: 1"
+        position="-0.5 1 1"
+      ></a-entity>
       <a-assets>
         <img id="balltexture" src="golf_ball/golf_ball_texture.png" />
         <a-asset-item
@@ -63,7 +70,7 @@
         <a-sphere
           id="ball_hitbox"
           scale="1 1 1"
-          ammo-body="type: kinematic;linearDamping: 0.5;emitCollisionEvents: true;collisionFilterGroup: 2; collisionFilterMask: 2;"
+          ammo-body="type: kinematic;emitCollisionEvents: true;collisionFilterGroup: 2; collisionFilterMask: 2;"
           ammo-shape="type: sphere"
           radius="0.22"
           visible="false"
@@ -105,10 +112,10 @@
     <div id="overlay">
       <div id="win_popup">
         <h1>Ganaste!</h1>
-        <button onclick="console.log('click')">Reiniciar</button>
+        <button class="btn-reset">Reiniciar</button>
         <img id="confeti" src="images/confeti.gif" alt="" />
       </div>
-      <button onclick="console.log('click')">Reiniciar</button>
+      <button class="btn-reset">Reiniciar</button>
     </div>
   </body>
 </html>
