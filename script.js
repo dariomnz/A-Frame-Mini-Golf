@@ -10,7 +10,13 @@ function getMethods(obj) {
   }
   return res;
 }
-const tempVector = new THREE.Vector3();
+
+function setToques(value){
+  document.getElementById("num_toques").innerHTML = value.toString()
+}
+function getToques(){
+  return parseInt(document.getElementById("num_toques").innerHTML)
+}
 
 AFRAME.registerComponent("ammo-restitution", {
   schema: { default: 0.5 },
@@ -75,6 +81,7 @@ AFRAME.registerComponent("ball-collision", {
       console.log("Colision ", id);
       if (id == "wedge_head" || id == "wedge_rod")
         window.navigator.vibrate(200);
+        setToques(getToques()+1)
     });
   },
 });
@@ -191,6 +198,9 @@ AFRAME.registerComponent("golf-game", {
     ball.body.setAngularVelocity(angularVelocity);
     Ammo.destroy(velocity);
     Ammo.destroy(angularVelocity);
+
+    setToques(0)
+    // console.log(getToques())
   },
 
   tick: function (time, timeDelta) {

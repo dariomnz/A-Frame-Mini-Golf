@@ -52,3 +52,21 @@ body {
   position: absolute;
   pointer-events: none;
 }
+
+#header{
+  display: flex;
+}
+
+#header>button{
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#header>div{
+  display: flex;
+  padding: 0 1em;
+  background: #33333380;
+  border: 5px solid #ffffff8a;
+  color: white;
+}

@@ -60,7 +60,7 @@
       <a-sphere
         id="ball"
         material="color:white;src:#balltexture"
-        position="-9.2 -1 -6.3"
+        position="0 0 -1"
         scale="1 1 1"
         ammo-body="type: dynamic;linearDamping: 0.1"
         ammo-shape="type: sphere"
@@ -78,7 +78,7 @@
         ></a-sphere
       ></a-sphere>
 
-      <a-entity id="camera" position="-9.15 0 -6.3">
+      <a-entity id="camera" position="0 0 0">
         <a-camera position="0 0 0" fov="100">
           <a-entity id="wedge" scale="0.02 0.02 0.02" gltf-model="#golf_wedge">
             <a-box
@@ -115,7 +115,13 @@
         <button class="btn-reset">Reiniciar</button>
         <img id="confeti" src="images/confeti.gif" alt="" />
       </div>
-      <button class="btn-reset">Reiniciar</button>
+      <div id="header">
+        <div>
+          <p>Toques:</p>
+          <p id="num_toques">0</p>
+        </div>
+        <button class="btn-reset">Reiniciar</button>
+      </div>
     </div>
   </body>
 </html>
