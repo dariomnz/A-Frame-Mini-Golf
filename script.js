@@ -11,11 +11,69 @@ function getMethods(obj) {
   return res;
 }
 
-function setToques(value){
-  document.getElementById("num_toques").innerHTML = value.toString()
+function setToques(value) {
+  document.getElementById("num_toques").innerHTML = value.toString();
 }
-function getToques(){
-  return parseInt(document.getElementById("num_toques").innerHTML)
+function getToques() {
+  return parseInt(document.getElementById("num_toques").innerHTML);
+}
+
+function changeLevel(levelname) {
+  console.log("Changing level to: ", levelname);
+
+  level = document.getElementById("level");
+  level.removeAttribute("ammo-shape");
+  level.removeAttribute("ammo-body");
+  level.removeAttribute("gltf-model");
+  level.setAttribute("gltf-model", levelname.toString());
+
+  var position = "0 0 0";
+  switch (levelname) {
+    case "#level1_model":
+      position = "0 -2.7 -12.2";
+      break;
+    case "#level2_model":
+      position = "-9.15 -1.25 -5.8";
+      break;
+    case "#level3_model":
+      position = "-6.6 -0.6 -32.5";
+      break;
+    default:
+      break;
+  }
+
+  hole_hitbox = document.getElementById("hole_hitbox");
+  hole_hitbox.setAttribute("position", position);
+  hole_hitbox.components["ammo-body"].syncToPhysics()
+  onResetScene();
+}
+
+function onResetScene() {
+  win_popup = document.getElementById("win_popup");
+  camera = document.getElementById("camera");
+  ball = document.getElementById("ball");
+  win_popup.style.visibility = "hidden";
+  camera.setAttribute("position", "0 0 0");
+  camera.setAttribute("rotation", "0 0 0");
+
+  const transform = new Ammo.btTransform();
+  ball.body.getMotionState().getWorldTransform(transform);
+  const positionVec = new Ammo.btVector3(0, 0, -1);
+  transform.setOrigin(positionVec);
+  ball.body.getMotionState().setWorldTransform(transform);
+  ball.body.setCenterOfMassTransform(transform);
+  ball.body.activate();
+  Ammo.destroy(transform);
+  Ammo.destroy(positionVec);
+
+  const velocity = new Ammo.btVector3(0, 0, 0);
+  const angularVelocity = new Ammo.btVector3(0, 0, 0);
+  ball.body.setLinearVelocity(velocity);
+  ball.body.setAngularVelocity(angularVelocity);
+  Ammo.destroy(velocity);
+  Ammo.destroy(angularVelocity);
+
+  setToques(0);
 }
 
 AFRAME.registerComponent("ammo-restitution", {
@@ -81,7 +139,7 @@ AFRAME.registerComponent("ball-collision", {
       console.log("Colision ", id);
       if (id == "wedge_head" || id == "wedge_rod")
         window.navigator.vibrate(200);
-        setToques(getToques()+1)
+      setToques(getToques() + 1);
     });
   },
 });
@@ -115,7 +173,6 @@ AFRAME.registerComponent("golf-game", {
     this.onExitXR = this.onExitXR.bind(this);
     this.onSelectEnd = this.onSelectEnd.bind(this);
     this.onSelectStart = this.onSelectStart.bind(this);
-    this.onResetScene = this.onResetScene.bind(this);
 
     this.el.addEventListener("enter-vr", this.onEnterXR);
     this.el.addEventListener("exit-vr", this.onExitXR);
@@ -123,12 +180,6 @@ AFRAME.registerComponent("golf-game", {
     this.rotate_left = false;
     this.rotate_right = false;
 
-    var botones = document.getElementsByClassName("btn-reset");
-    for (var i = 0; i < botones.length; i++) {
-      botones[i].addEventListener("click", this.onResetScene);
-    }
-
-    
     reset_plane.addEventListener("collidestart", this.onResetScene);
   },
 
@@ -181,33 +232,6 @@ AFRAME.registerComponent("golf-game", {
       this.data.camera_preview.setAttribute("visible", true);
       this.camera_point = intersects[0].point;
     }
-  },
-
-  onResetScene: function () {
-    this.data.win_popup.style.visibility = "hidden";
-    this.data.camera.setAttribute("position", "0 0 0");
-    this.data.camera.setAttribute("rotation", "0 0 0");
-
-    ball = document.getElementById("ball");
-    const transform = new Ammo.btTransform();
-    ball.body.getMotionState().getWorldTransform(transform);
-    const positionVec = new Ammo.btVector3(0, 0, -1);
-    transform.setOrigin(positionVec);
-    ball.body.getMotionState().setWorldTransform(transform);
-    ball.body.setCenterOfMassTransform(transform);
-    ball.body.activate();
-    Ammo.destroy(transform);
-    Ammo.destroy(positionVec);
-
-    const velocity = new Ammo.btVector3(0, 0, 0);
-    const angularVelocity = new Ammo.btVector3(0, 0, 0);
-    ball.body.setLinearVelocity(velocity);
-    ball.body.setAngularVelocity(angularVelocity);
-    Ammo.destroy(velocity);
-    Ammo.destroy(angularVelocity);
-
-    setToques(0)
-    // console.log(getToques())
   },
 
   tick: function (time, timeDelta) {

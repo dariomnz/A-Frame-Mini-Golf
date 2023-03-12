@@ -26,7 +26,15 @@
         <img id="balltexture" src="golf_ball/golf_ball_texture.png" />
         <a-asset-item
           id="level1_model"
-          src="mini_golf_course/scene_low.gltf"
+          src="mini_golf_map_1/scene_low.gltf"
+        ></a-asset-item>
+        <a-asset-item
+          id="level2_model"
+          src="mini_golf_map_2/scene_low.gltf"
+        ></a-asset-item>
+        <a-asset-item
+          id="level3_model"
+          src="mini_golf_map_3/scene_low.gltf"
         ></a-asset-item>
         <a-asset-item
           id="map_point"
@@ -40,21 +48,20 @@
 
       <a-entity
         id="level"
-        delay-scale="0.5 0.5 0.5"
         gltf-model="#level1_model"
         position="0 -2 0"
         autofit-gltf-ammo
       >
         <a-box
-          position="-9.2 -3.05 -6.3"
-          id="hole_hitbox"
-          material="color:red"
-          ammo-body="type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
-          ammo-shape="type:box;fit:manual;halfExtents:0.3 0.3 0.3;offset:0 0 0;"
-          visible="false"
-          hole-collision
-        >
-        </a-box>
+        position="0 -4.7 -12.2"
+        id="hole_hitbox"
+        material="color:red"
+        ammo-body="type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
+        ammo-shape="type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;"
+        visible="false"
+        hole-collision
+      >
+      </a-box>
       </a-entity>
 
       <a-sphere
@@ -113,7 +120,7 @@
         id="reset_plane"
         position="0 -10 0"
         ammo-body="type:static;emitCollisionEvents: true;"
-        ammo-shape="type:box;fit:manual;halfExtents:50 1 50;"
+        ammo-shape="type:box;fit:manual;halfExtents:100 1 100;"
         visible="false"
       >
       </a-entity>
@@ -121,15 +128,23 @@
     <div id="overlay">
       <div id="win_popup">
         <h1>Ganaste!</h1>
-        <button class="btn-reset">Reiniciar</button>
+        <button class="btn-reset" onclick="onResetScene()">Reiniciar</button>
         <img id="confeti" src="images/confeti.gif" alt="" />
       </div>
       <div id="header">
-        <div>
+        <div id="label">
           <p>Toques:</p>
           <p id="num_toques">0</p>
         </div>
-        <button class="btn-reset">Reiniciar</button>
+        <div class="dropdown">
+          <button class="dropbtn">Levels</button>
+          <div class="dropdown-content">
+            <button onclick="changeLevel('#level1_model')">Level 1</button>
+            <button onclick="changeLevel('#level2_model')">Level 2</button>
+            <button onclick="changeLevel('#level3_model')">Level 3</button>
+          </div>
+        </div>
+        <button class="btn-reset" onclick="onResetScene()">Reiniciar</button>
       </div>
     </div>
   </body>

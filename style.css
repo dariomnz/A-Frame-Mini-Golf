@@ -58,15 +58,38 @@ body {
 }
 
 #header>button{
-  margin-left: auto;
   margin-top: auto;
   margin-bottom: auto;
 }
 
-#header>div{
+#label{
   display: flex;
   padding: 0 1em;
   background: #33333380;
   border: 5px solid #ffffff8a;
   color: white;
 }
+
+.dropbtn {
+  color: white;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content>button{
+  margin: 0.5rem;
+}
+.dropdown:hover .dropdown-content {display: flex; flex-flow: column;}
