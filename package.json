@@ -1,0 +1,15 @@
+{
+    "name": "A-Frame-Mini-Golf",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+      "start": "serve"
+    },
+    "keywords": [],
+    "author": "Dario Muñoz Muñoz",
+    "license": "MIT",
+    "devDependencies": {
+      "serve": "^11.2.0"
+    }
+  }
