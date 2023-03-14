@@ -18,6 +18,16 @@ function getToques() {
   return parseInt(document.getElementById("num_toques").innerHTML);
 }
 
+function toggleLevelDropdown() {
+  dropdown = document.getElementsByClassName("dropdown-content")[0];
+  console.log(dropdown);
+  if (dropdown.style.display != "flex") {
+    dropdown.style.display = "flex";
+  } else {
+    dropdown.style.display = "none";
+  }
+}
+
 actual_level = "#level1_model";
 function nextLevel() {
   var next_level = "";
@@ -40,6 +50,9 @@ function nextLevel() {
 
 async function changeLevel(levelname) {
   console.log("Changing level to: ", levelname);
+  dropdown = document.getElementsByClassName("dropdown-content")[0];
+  dropdown.style.display = "none";
+
   actual_level = levelname;
 
   level = document.getElementById("level");
@@ -67,8 +80,14 @@ async function changeLevel(levelname) {
   hole_hitbox.removeAttribute("ammo-shape");
   hole_hitbox.removeAttribute("ammo-body");
   hole_hitbox.setAttribute("position", position);
-  hole_hitbox.setAttribute("ammo-body", "type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;");
-  hole_hitbox.setAttribute("ammo-shape", "type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;");
+  hole_hitbox.setAttribute(
+    "ammo-body",
+    "type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
+  );
+  hole_hitbox.setAttribute(
+    "ammo-shape",
+    "type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;"
+  );
 
   await new Promise((r) => setTimeout(r, 200));
   onResetScene();
