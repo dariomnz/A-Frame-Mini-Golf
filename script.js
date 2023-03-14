@@ -182,9 +182,10 @@ AFRAME.registerComponent("ball-collision", {
     this.el.addEventListener("collidestart", (e) => {
       id = e.detail?.targetEl?.id;
       console.log("Colision ", id);
-      if (id == "wedge_head" || id == "wedge_rod")
+      if (id == "wedge_head" || id == "wedge_rod") {
         window.navigator.vibrate(200);
-      setToques(getToques() + 1);
+        setToques(getToques() + 1);
+      }
     });
   },
 });
@@ -226,6 +227,11 @@ AFRAME.registerComponent("golf-game", {
     this.rotate_right = false;
 
     reset_plane.addEventListener("collidestart", onResetScene);
+
+    document.getElementById("controls-panel").style.display = "flex";
+    if (document.getElementById("btn-jugar").classList.contains("a-hidden")) {
+      document.getElementById("error-no-ar").style.display = "block";
+    }
   },
 
   onEnterXR: function () {
@@ -234,9 +240,17 @@ AFRAME.registerComponent("golf-game", {
     this.session = this.el.sceneEl.renderer.xr.getSession();
     this.session.addEventListener("selectend", this.onSelectEnd);
     this.session.addEventListener("selectstart", this.onSelectStart);
+
+    document.getElementById("controls-panel").style.display = "none";
+    document.getElementById("header").style.display = "flex";
+
+    onResetScene();
   },
 
-  onExitXR: function () {},
+  onExitXR: function () {
+    document.getElementById("controls-panel").style.display = "flex";
+    document.getElementById("header").style.display = "flex";
+  },
 
   onSelectEnd: function (e) {
     // Cuando sueltas click se mueve a la posicion y se hace invisible el puntero

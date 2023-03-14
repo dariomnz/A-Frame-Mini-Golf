@@ -15,6 +15,7 @@
       webxr="requiredFeatures: local-floor, dom-overlay;overlayElement:#overlay;"
       physics="driver: ammo; debug: true; debugDrawMode: 1;"
       light="defaultLightsEnabled: false"
+      vr-mode-ui="enterVRButton:#btn-jugar-vr; enterARButton: #btn-jugar"
       golf-game
     >
       <a-entity light="type: ambient; color: #FFF; intensity: 0.5"></a-entity>
@@ -131,7 +132,7 @@
         <button class="btn-reset" onclick="onResetScene()">Reiniciar</button>
         <img id="confeti" src="images/confeti.gif" alt="" />
       </div>
-      <div id="header">
+      <div id="header" style="display: none">
         <div id="label">
           <p>Toques:</p>
           <p id="num_toques">0</p>
@@ -147,6 +148,55 @@
           </div>
         </div>
         <button class="btn-reset" onclick="onResetScene()">Reiniciar</button>
+      </div>
+      <div id="controls-panel" style="display: none">
+        <div id="controls-background">
+          <div class="controls-rotate"></div>
+          <div class="controls-teleport"></div>
+          <div class="controls-rotate"></div>
+        </div>
+        <div id="instructions">
+          <h1 class="instructions-text">
+            A-Frame Mini-Golf
+            <p>By Dariomnz</p>
+          </h1>
+          <h2 class="instructions-text">Instrucciones</h2>
+          <h3 class="instructions-text">
+            El juego consiste en 3 niveles, se gana introduciendo la pelota de
+            golf en el hollo. Para ello se golpea la pelota con el palo de golf
+            controlado con el movil.
+          </h3>
+          <h3 class="instructions-text">
+            Te teletrasportas dando click en la pantalla en la zona roja.
+          </h3>
+          <h3 class="instructions-text">
+            Giras la camara manteniendo pulsado la pantalla en la zona azul.
+          </h3>
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+              transform="rotate(180)"
+              viewBox="0 0 24 24"
+            >
+              <path d="M24 12l-9-8v6h-15v4h15v6z" />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+              viewBox="0 0 24 24"
+            >
+              <path d="M24 12l-9-8v6h-15v4h15v6z" />
+            </svg>
+          </div>
+          <button id="btn-jugar">Jugar en AR</button>
+          <button id="btn-jugar-vr" style="display: none">Jugar en VR</button>
+          <h2 id="error-no-ar" class="instructions-text" style="display: none">
+            Solo esta disponible el juego en AR y tu dispositivo no lo soporta
+          </h2>
+        </div>
       </div>
     </div>
   </body>

@@ -101,3 +101,73 @@ body {
 .dropdown-content > button {
   margin: 0.5rem;
 }
+
+#controls-panel,
+#controls-background {
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+#controls-background {
+  z-index: 0;
+}
+
+#instructions {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+}
+
+#controls-background > div {
+  height: 100%;
+}
+
+.controls-rotate {
+  background-color: rgba(0, 183, 255, 0.37);
+  width: 15%;
+}
+
+.controls-teleport {
+  background-color: rgba(255, 38, 0, 0.37);
+  width: 70%;
+}
+
+#instructions {
+  z-index: 0;
+  width: 90%;
+}
+
+.instructions-text {
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 20px;
+  text-align: center;
+}
+.instructions-text > p {
+  background-color: rgba(255, 255, 255, 0.75);
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#instructions > div {
+  width: 70vw;
+}
+
+#instructions > div > svg:last-child {
+  float: right;
+}
+
+#btn-jugar {
+  font-size: 1rem;
+  margin: auto;
+  padding: 1rem 2rem;
+}
