@@ -38,7 +38,7 @@ function nextLevel() {
   changeLevel(next_level);
 }
 
-function changeLevel(levelname) {
+async function changeLevel(levelname) {
   console.log("Changing level to: ", levelname);
   actual_level = levelname;
 
@@ -70,7 +70,7 @@ function changeLevel(levelname) {
   hole_hitbox.setAttribute("ammo-body", "type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;");
   hole_hitbox.setAttribute("ammo-shape", "type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;");
 
-  // hole_hitbox.components["ammo-body"].syncToPhysics();
+  await new Promise((r) => setTimeout(r, 200));
   onResetScene();
 }
 
