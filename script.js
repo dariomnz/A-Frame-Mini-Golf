@@ -64,13 +64,13 @@ async function changeLevel(levelname) {
   var position = "0 0 0";
   switch (levelname) {
     case "#level1_model":
-      position = "0 -2.7 -12.2";
+      position = "0 -3.5 -12.2";
       break;
     case "#level2_model":
-      position = "-9. -1.22 -5.8";
+      position = "-9. -1.5 -5.8";
       break;
     case "#level3_model":
-      position = "-6.6 -0.6 -32.5";
+      position = "-6.6 -1 -32.5";
       break;
     default:
       break;
@@ -80,6 +80,7 @@ async function changeLevel(levelname) {
   hole_hitbox.removeAttribute("ammo-shape");
   hole_hitbox.removeAttribute("ammo-body");
   hole_hitbox.setAttribute("position", position);
+  await new Promise((r) => setTimeout(r, 100));
   hole_hitbox.setAttribute(
     "ammo-body",
     "type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
@@ -235,21 +236,22 @@ AFRAME.registerComponent("golf-game", {
   },
 
   onEnterXR: function () {
+    document.getElementById("controls-panel").style.display = "none";
+    document.getElementById("header").style.display = "flex";
+
+    console.log(document.getElementById("header").style)
     if (!this.el.sceneEl.is("ar-mode")) return;
 
     this.session = this.el.sceneEl.renderer.xr.getSession();
     this.session.addEventListener("selectend", this.onSelectEnd);
     this.session.addEventListener("selectstart", this.onSelectStart);
 
-    document.getElementById("controls-panel").style.display = "none";
-    document.getElementById("header").style.display = "flex";
-
     onResetScene();
   },
 
   onExitXR: function () {
     document.getElementById("controls-panel").style.display = "flex";
-    document.getElementById("header").style.display = "flex";
+    document.getElementById("header").style.display = "none";
   },
 
   onSelectEnd: function (e) {
