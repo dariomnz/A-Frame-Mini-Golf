@@ -109,18 +109,33 @@ body {
   left: 0;
   top: 0;
   width: 100vw;
-  height: 100vh;
   justify-content: center;
   align-items: center;
 }
 #controls-background {
   z-index: 0;
+  height: 100vh;
+}
+
+#controls-panel {
+  height: 100%;
+}
+
+#instructions-container {
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+
 }
 
 #instructions {
   display: grid;
   justify-items: center;
   align-content: center;
+  margin: auto;
+  z-index: 0;
+  width: 90%;
 }
 
 #controls-background > div {
@@ -135,11 +150,6 @@ body {
 .controls-teleport {
   background-color: rgba(255, 38, 0, 0.37);
   width: 70%;
-}
-
-#instructions {
-  z-index: 0;
-  width: 90%;
 }
 
 .instructions-text {
