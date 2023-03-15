@@ -180,3 +180,8 @@ body {
   margin: auto;
   padding: 1rem 2rem;
 }
+
+#btn-init-container{
+    position: absolute;
+    bottom: 10px;
+}
