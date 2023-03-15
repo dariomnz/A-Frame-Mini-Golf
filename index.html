@@ -3,6 +3,7 @@
 
   <head>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
     <script src="script.js"></script>
@@ -38,6 +39,10 @@
           src="mini_golf_map_3/scene_low.gltf"
         ></a-asset-item>
         <a-asset-item
+          id="flag_model"
+          src="golf_flag_animated/scene_low.gltf"
+        ></a-asset-item>
+        <a-asset-item
           id="map_point"
           src="map_point/map_point.gltf"
         ></a-asset-item>
@@ -53,8 +58,14 @@
         position="0 -2 0"
         autofit-gltf-ammo
       >
-        <a-box
-          position="0 -4.7 -12.2"
+      </a-entity>
+      
+      <a-entity
+        id="flag"
+        gltf-model="#flag_model"
+        animation-mixer
+        position="0 -5 -12.2"
+        ><a-box
           id="hole_hitbox"
           material="color:red"
           ammo-body="type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
@@ -62,8 +73,9 @@
           visible="false"
           hole-collision
         >
-        </a-box>
-      </a-entity>
+        </a-box
+      ></a-entity>
+
       <a-sphere
         id="ball"
         material="color:white;src:#balltexture"

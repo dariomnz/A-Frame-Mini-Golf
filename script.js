@@ -69,21 +69,21 @@ async function changeLevel(levelname) {
   var position = "0 0 0";
   switch (levelname) {
     case "#level1_model":
-      position = "0 -3 -12.2";
+      position = "0 -5 -12.2";
       break;
     case "#level2_model":
-      position = "-9. -1.5 -5.8";
+      position = "-9. -3.5 -5.8";
       break;
     case "#level3_model":
-      position = "-6.6 -1 -32.5";
+      position = "-6.6 -3 -32.5";
       break;
     default:
       break;
   }
 
   resetAmmo("hole_hitbox");
-  hole_hitbox = document.getElementById("hole_hitbox");
-  hole_hitbox.setAttribute("position", position);
+  flag = document.getElementById("flag");
+  flag.setAttribute("position", position);
 
   await new Promise((r) => setTimeout(r, 200));
   await onResetScene();
