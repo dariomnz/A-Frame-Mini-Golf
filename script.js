@@ -177,6 +177,10 @@ AFRAME.registerComponent("hole-collision", {
     this.el.addEventListener("collidestart", (e) => {
       id = e.detail?.targetEl?.id;
       if (id == "ball_hitbox") {
+        btn_next_level = document.getElementById("btn-next-level");
+        if (actual_level == "#level3_model")
+          btn_next_level.innerHTML = "Empezar de nuevo";
+        else btn_next_level.innerHTML = "Siguiente nivel";
         this.data.win_popup.style.visibility = "visible";
         audio_win.play();
       }
