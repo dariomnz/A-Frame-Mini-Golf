@@ -20,7 +20,7 @@ function getToques() {
 
 function toggleLevelDropdown() {
   dropdown = document.getElementsByClassName("dropdown-content")[0];
-  console.log(dropdown);
+
   if (dropdown.style.display != "flex") {
     dropdown.style.display = "flex";
   } else {
@@ -81,11 +81,11 @@ async function changeLevel(levelname) {
       break;
   }
 
-  resetAmmo("hole_hitbox");
+  promise = resetAmmo("hole_hitbox");
   flag = document.getElementById("flag");
   flag.setAttribute("position", position);
-
-  await new Promise((r) => setTimeout(r, 200));
+  await promise;
+  await new Promise((r) => setTimeout(r, 100));
   await onResetScene();
   canChangeLevel = true;
 }
@@ -165,6 +165,7 @@ AFRAME.registerComponent("delay-scale", {
   },
 });
 
+const audio_win = new Audio("sounds/winner.mp3");
 AFRAME.registerComponent("hole-collision", {
   schema: {
     win_popup: {
@@ -173,13 +174,11 @@ AFRAME.registerComponent("hole-collision", {
     },
   },
   init: function () {
-    var audio = new Audio("sounds/winner.mp3");
     this.el.addEventListener("collidestart", (e) => {
       id = e.detail?.targetEl?.id;
-      console.log(this.data.win_popup);
       if (id == "ball_hitbox") {
         this.data.win_popup.style.visibility = "visible";
-        audio.play();
+        audio_win.play();
       }
     });
   },
@@ -246,7 +245,6 @@ AFRAME.registerComponent("golf-game", {
     document.getElementById("controls-panel").style.display = "none";
     document.getElementById("header").style.display = "flex";
 
-    console.log(document.getElementById("header").style);
     if (!this.el.sceneEl.is("ar-mode")) return;
 
     this.session = this.el.sceneEl.renderer.xr.getSession();
@@ -319,7 +317,7 @@ AFRAME.registerComponent("golf-game", {
       );
 
       if (intersects.length === 0) return;
-      // console.log(intersects);
+
       this.data.camera_preview.setAttribute("position", intersects[0].point);
       this.camera_point = intersects[0].point;
 
