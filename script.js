@@ -94,32 +94,41 @@ async function changeLevel(levelname) {
   onResetScene();
 }
 
-function onResetScene() {
+async function resetAmmo(id) {
+  entity = document.getElementById(id);
+  entity_ammo_body = entity.getAttribute("ammo-body");
+  entity_ammo_shape = entity.getAttribute("ammo-shape");
+  entity.removeAttribute("ammo-shape");
+  entity.removeAttribute("ammo-body");
+  await new Promise((r) => setTimeout(r, 100));
+  console.log(id);
+  entity.setAttribute("ammo-body", entity_ammo_body);
+  entity.setAttribute("ammo-shape", entity_ammo_shape);
+}
+
+canReset = true;
+
+async function onResetScene() {
+  if (!canReset) return;
+  canReset = false;
+  setToques(0);
   win_popup = document.getElementById("win_popup");
   camera = document.getElementById("camera");
   ball = document.getElementById("ball");
+  ball_hitbox = document.getElementById("ball_hitbox");
   win_popup.style.visibility = "hidden";
+  resetAmmo("ball_hitbox");
+  await new Promise((r) => setTimeout(r, 100));
+  resetAmmo("ball");
+  ball.setAttribute("position", "0 0 -1");
+  await new Promise((r) => setTimeout(r, 100));
+  resetAmmo("wedge_rod");
+  await new Promise((r) => setTimeout(r, 100));
+  resetAmmo("wedge_head");
   camera.setAttribute("position", "0 0 0");
   camera.setAttribute("rotation", "0 0 0");
-
-  const transform = new Ammo.btTransform();
-  ball.body.getMotionState().getWorldTransform(transform);
-  const positionVec = new Ammo.btVector3(0, 0, -1);
-  transform.setOrigin(positionVec);
-  ball.body.getMotionState().setWorldTransform(transform);
-  ball.body.setCenterOfMassTransform(transform);
-  ball.body.activate();
-  Ammo.destroy(transform);
-  Ammo.destroy(positionVec);
-
-  const velocity = new Ammo.btVector3(0, 0, 0);
-  const angularVelocity = new Ammo.btVector3(0, 0, 0);
-  ball.body.setLinearVelocity(velocity);
-  ball.body.setAngularVelocity(angularVelocity);
-  Ammo.destroy(velocity);
-  Ammo.destroy(angularVelocity);
-
-  setToques(0);
+  await new Promise((r) => setTimeout(r, 200));
+  canReset = true;
 }
 
 AFRAME.registerComponent("ammo-restitution", {
@@ -239,7 +248,7 @@ AFRAME.registerComponent("golf-game", {
     document.getElementById("controls-panel").style.display = "none";
     document.getElementById("header").style.display = "flex";
 
-    console.log(document.getElementById("header").style)
+    console.log(document.getElementById("header").style);
     if (!this.el.sceneEl.is("ar-mode")) return;
 
     this.session = this.el.sceneEl.renderer.xr.getSession();
