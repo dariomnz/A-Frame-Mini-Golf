@@ -48,7 +48,11 @@ function nextLevel() {
   changeLevel(next_level);
 }
 
+canChangeLevel = true;
+
 async function changeLevel(levelname) {
+  if (!canChangeLevel) return;
+  canChangeLevel = false;
   console.log("Changing level to: ", levelname);
   dropdown = document.getElementsByClassName("dropdown-content")[0];
   dropdown.style.display = "none";
@@ -59,12 +63,13 @@ async function changeLevel(levelname) {
   level.removeAttribute("ammo-shape");
   level.removeAttribute("ammo-body");
   level.removeAttribute("gltf-model");
+  await new Promise((r) => setTimeout(r, 100));
   level.setAttribute("gltf-model", levelname.toString());
 
   var position = "0 0 0";
   switch (levelname) {
     case "#level1_model":
-      position = "0 -3.5 -12.2";
+      position = "0 -3 -12.2";
       break;
     case "#level2_model":
       position = "-9. -1.5 -5.8";
@@ -76,22 +81,13 @@ async function changeLevel(levelname) {
       break;
   }
 
+  resetAmmo("hole_hitbox");
   hole_hitbox = document.getElementById("hole_hitbox");
-  hole_hitbox.removeAttribute("ammo-shape");
-  hole_hitbox.removeAttribute("ammo-body");
   hole_hitbox.setAttribute("position", position);
-  await new Promise((r) => setTimeout(r, 100));
-  hole_hitbox.setAttribute(
-    "ammo-body",
-    "type:static;collisionFilterGroup: 2; collisionFilterMask: 2;emitCollisionEvents: true;"
-  );
-  hole_hitbox.setAttribute(
-    "ammo-shape",
-    "type:box;fit:manual;halfExtents:0.4 0.4 0.4;offset:0 0 0;"
-  );
 
   await new Promise((r) => setTimeout(r, 200));
-  onResetScene();
+  await onResetScene();
+  canChangeLevel = true;
 }
 
 async function resetAmmo(id) {
@@ -101,7 +97,6 @@ async function resetAmmo(id) {
   entity.removeAttribute("ammo-shape");
   entity.removeAttribute("ammo-body");
   await new Promise((r) => setTimeout(r, 100));
-  console.log(id);
   entity.setAttribute("ammo-body", entity_ammo_body);
   entity.setAttribute("ammo-shape", entity_ammo_shape);
 }
@@ -117,17 +112,20 @@ async function onResetScene() {
   ball = document.getElementById("ball");
   ball_hitbox = document.getElementById("ball_hitbox");
   win_popup.style.visibility = "hidden";
-  resetAmmo("ball_hitbox");
+  promise1 = resetAmmo("ball_hitbox");
   await new Promise((r) => setTimeout(r, 100));
-  resetAmmo("ball");
+  promise2 = resetAmmo("ball");
   ball.setAttribute("position", "0 0 -1");
   await new Promise((r) => setTimeout(r, 100));
-  resetAmmo("wedge_rod");
+  promise3 = resetAmmo("wedge_rod");
   await new Promise((r) => setTimeout(r, 100));
-  resetAmmo("wedge_head");
+  promise4 = resetAmmo("wedge_head");
   camera.setAttribute("position", "0 0 0");
   camera.setAttribute("rotation", "0 0 0");
-  await new Promise((r) => setTimeout(r, 200));
+  await promise1;
+  await promise2;
+  await promise3;
+  await promise4;
   canReset = true;
 }
 
@@ -255,7 +253,7 @@ AFRAME.registerComponent("golf-game", {
     this.session.addEventListener("selectend", this.onSelectEnd);
     this.session.addEventListener("selectstart", this.onSelectStart);
 
-    onResetScene();
+    changeLevel("#level1_model");
   },
 
   onExitXR: function () {
